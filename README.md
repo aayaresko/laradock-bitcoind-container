@@ -1,9 +1,11 @@
 # BITCOIND container
 
+You can use either Dockerfile (uses Ubuntu 18) or Dockerfile.apline (uses Alpine linux)
+
 ### Getting started
 * Move to your laradock containers directory and download source from repository
 ```
-cd laradock && git clone git@github.com:aayaresko/laradoc-bitcoind-container.git
+cd laradock && git clone git@github.com:aayaresko/laradoc-bitcoind-container.git bitcoind
 ```
 
 * Update your .env file
@@ -23,3 +25,6 @@ You can run the container
 ```
 docker-compose up -d bitcoind
 ```
+
+####### Donations
+you can donate to my btc address: 13XeRbQqX6bVpavQwWtq4kPU9wztiGYEP7
