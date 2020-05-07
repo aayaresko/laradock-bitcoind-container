@@ -3,7 +3,6 @@ FROM alpine
 RUN apk update && apk add \
         ca-certificates \
         wget \
-        cpulimit \
         bitcoin
 
 ARG BITCOIND_CONFIG_PATH=/etc/bitcoin.conf
