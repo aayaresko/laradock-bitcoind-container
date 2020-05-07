@@ -1,0 +1,31 @@
+FROM alpine
+
+RUN apk update && apk add \
+        ca-certificates \
+        wget \
+        cpulimit \
+        bitcoin
+
+ARG BITCOIND_CONFIG_PATH=/etc/bitcoin.conf
+ARG BITCOIND_BLOCKCHAIN_PATH
+ARG BITCOIND_RPC_AUTH_STRING
+ARG BITCOIND_RPC_PORT
+ARG BITCOIND_MAX_CPU_LOAD
+
+ENV BITCOIND_BLOCKCHAIN_PATH ${BITCOIND_BLOCKCHAIN_PATH}
+ENV BITCOIND_CONFIG_PATH ${BITCOIND_CONFIG_PATH}
+ENV BITCOIND_MAX_CPU_LOAD ${BITCOIND_MAX_CPU_LOAD}
+
+RUN mkdir -p $BITCOIND_BLOCKCHAIN_PATH
+
+COPY bitcoin.conf $BITCOIND_CONFIG_PATH
+COPY docker-entrypoint.sh /docker-entrypoint.sh
+
+RUN chmod +x /docker-entrypoint.sh
+
+RUN sed -i "s/rpcauth=/rpcauth=${BITCOIND_RPC_AUTH_STRING}/g" $BITCOIND_CONFIG_PATH
+RUN sed -i "s#datadir=#datadir=${BITCOIND_BLOCKCHAIN_PATH}#g" $BITCOIND_CONFIG_PATH
+
+CMD bitcoind -conf=${BITCOIND_CONFIG_PATH}
+
+EXPOSE $BITCOIND_RPC_PORT
